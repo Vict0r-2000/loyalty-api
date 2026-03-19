@@ -10,6 +10,7 @@ const auth_1 = __importDefault(require("./routes/auth"));
 const programs_1 = __importDefault(require("./routes/programs"));
 const cards_1 = __importDefault(require("./routes/cards"));
 const billing_1 = __importDefault(require("./routes/billing"));
+const profile_1 = __importDefault(require("./routes/profile"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 3000;
@@ -29,6 +30,7 @@ app.use('/api/auth', auth_1.default);
 app.use('/api/programs', programs_1.default);
 app.use('/api/cards', cards_1.default);
 app.use('/api/billing', billing_1.default);
+app.use('/api/profile', profile_1.default);
 app.listen(PORT, () => {
     console.log(`Serveur démarré sur le port ${PORT}`);
 });

@@ -5,6 +5,7 @@ import authRoutes from './routes/auth'
 import programRoutes from './routes/programs'
 import cardRoutes from './routes/cards'
 import billingRoutes from './routes/billing'
+import profileRoutes from './routes/profile'
 
 dotenv.config()
 
@@ -30,6 +31,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/programs', programRoutes)
 app.use('/api/cards', cardRoutes)
 app.use('/api/billing', billingRoutes)
+app.use('/api/profile', profileRoutes)
 
 app.listen(PORT, () => {
   console.log(`Serveur démarré sur le port ${PORT}`)

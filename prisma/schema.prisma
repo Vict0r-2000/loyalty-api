@@ -13,6 +13,9 @@ model Business {
   email                String   @unique
   passwordHash         String
   logoUrl              String?
+  phone                String?
+  address              String?
+  website              String?
   stripeSubscriptionId String?
   subscriptionStatus   String?  @default("inactive")
   createdAt            DateTime @default(now())
@@ -27,8 +30,11 @@ model LoyaltyProgram {
   name       String
   type       ProgramType
   config     Json
+  color      String      @default("#1a1035")
+  emoji      String      @default("⭐")
   active     Boolean     @default(true)
   createdAt  DateTime    @default(now())
+
 
   business Business @relation(fields: [businessId], references: [id])
   cards    Card[]
