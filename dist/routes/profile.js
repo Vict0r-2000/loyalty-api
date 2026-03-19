@@ -47,7 +47,6 @@ router.put('/', auth_1.authMiddleware, async (req, res) => {
                 website: true
             }
         });
-        localStorage;
         res.json({ business });
     }
     catch {

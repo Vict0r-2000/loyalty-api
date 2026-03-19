@@ -47,7 +47,6 @@ router.put('/', authMiddleware, async (req: AuthRequest, res: Response) => {
         website: true
       }
     })
-    localStorage
     res.json({ business })
   } catch {
     res.status(500).json({ error: 'Erreur serveur' })
