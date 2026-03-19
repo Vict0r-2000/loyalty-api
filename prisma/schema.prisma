@@ -8,12 +8,14 @@ datasource db {
 }
 
 model Business {
-  id           String   @id @default(cuid())
-  name         String
-  email        String   @unique
-  passwordHash String
-  logoUrl      String?
-  createdAt    DateTime @default(now())
+  id                   String   @id @default(cuid())
+  name                 String
+  email                String   @unique
+  passwordHash         String
+  logoUrl              String?
+  stripeSubscriptionId String?
+  subscriptionStatus   String?  @default("inactive")
+  createdAt            DateTime @default(now())
 
   programs  LoyaltyProgram[]
   customers Customer[]
