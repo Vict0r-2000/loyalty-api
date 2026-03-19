@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Business {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  logoUrl      String?
+  createdAt    DateTime @default(now())
+
+  programs  LoyaltyProgram[]
+  customers Customer[]
+}
+
+model LoyaltyProgram {
+  id         String      @id @default(cuid())
+  businessId String
+  name       String
+  type       ProgramType
+  config     Json
+  active     Boolean     @default(true)
+  createdAt  DateTime    @default(now())
+
+  business Business @relation(fields: [businessId], references: [id])
+  cards    Card[]
+}
+
+model Customer {
+  id         String   @id @default(cuid())
+  businessId String
+  phone      String?
+  email      String?
+  createdAt  DateTime @default(now())
+
+  business Business @relation(fields: [businessId], references: [id])
+  cards    Card[]
+
+  @@unique([businessId, email])
+}
+
+model Card {
+  id         String   @id @default(cuid())
+  customerId String
+  programId  String
+  balance    Int      @default(0)
+  passToken  String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  customer     Customer       @relation(fields: [customerId], references: [id])
+  program      LoyaltyProgram @relation(fields: [programId], references: [id])
+  transactions Transaction[]
+}
+
+model Transaction {
+  id        String   @id @default(cuid())
+  cardId    String
+  delta     Int
+  note      String?
+  createdAt DateTime @default(now())
+
+  card Card @relation(fields: [cardId], references: [id])
+}
+
+enum ProgramType {
+  STAMP
+  POINTS
+}
