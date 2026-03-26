@@ -99,4 +99,25 @@ router.post('/scan', auth_1.authMiddleware, async (req, res) => {
         res.status(500).json({ error: 'Erreur serveur' });
     }
 });
+router.get('/:cardId', async (req, res) => {
+    const { cardId } = req.params;
+    try {
+        const card = await prisma.card.findUnique({
+            where: { id: cardId },
+            include: {
+                program: {
+                    include: { business: true }
+                },
+                customer: true
+            }
+        });
+        if (!card) {
+            return res.status(404).json({ error: 'Carte introuvable' });
+        }
+        res.json({ card });
+    }
+    catch {
+        res.status(500).json({ error: 'Erreur serveur' });
+    }
+});
 exports.default = router;
