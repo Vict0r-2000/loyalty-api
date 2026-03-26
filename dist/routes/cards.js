@@ -4,6 +4,7 @@ const express_1 = require("express");
 const client_1 = require("@prisma/client");
 const auth_1 = require("../middleware/auth");
 const googleWallet_1 = require("../services/googleWallet");
+const email_1 = require("../services/email");
 const router = (0, express_1.Router)();
 const prisma = new client_1.PrismaClient();
 router.post('/', auth_1.authMiddleware, async (req, res) => {
@@ -42,6 +43,7 @@ router.post('/', auth_1.authMiddleware, async (req, res) => {
             where: { id: card.id },
             data: { passToken: walletLink }
         });
+        await (0, email_1.sendWelcomeEmail)(customerEmail, customerName || customerEmail, program.business.name, program.name, card.id);
         res.status(201).json({
             message: 'Carte créée avec succès',
             card: {

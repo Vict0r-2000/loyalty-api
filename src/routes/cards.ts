@@ -2,6 +2,7 @@ import { Router, Response } from 'express'
 import { PrismaClient } from '@prisma/client'
 import { authMiddleware, AuthRequest } from '../middleware/auth'
 import { createLoyaltyClass, generateWalletLink } from '../services/googleWallet'
+import { sendWelcomeEmail } from '../services/email'
 
 const router = Router()
 const prisma = new PrismaClient()
@@ -58,12 +59,20 @@ router.post('/', authMiddleware, async (req: AuthRequest, res: Response) => {
       total
     )
 
-    await prisma.card.update({
-      where: { id: card.id },
-      data: { passToken: walletLink }
-    })
+await prisma.card.update({
+  where: { id: card.id },
+  data: { passToken: walletLink }
+})
 
-    res.status(201).json({
+await sendWelcomeEmail(
+  customerEmail,
+  customerName || customerEmail,
+  program.business.name,
+  program.name,
+  card.id
+)
+
+res.status(201).json({
       message: 'Carte créée avec succès',
       card: {
         id: card.id,
