@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendWelcomeEmail = sendWelcomeEmail;
 const resend_1 = require("resend");
+console.log('RESEND KEY:', process.env.RESEND_API_KEY ? 'PRESENT' : 'MISSING');
 const resend = new resend_1.Resend(process.env.RESEND_API_KEY);
 async function sendWelcomeEmail(customerEmail, customerName, businessName, programName, cardId) {
     const cardUrl = `${process.env.DASHBOARD_URL}/card/${cardId}`;
